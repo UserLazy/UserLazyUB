@@ -183,6 +183,7 @@ async def dyno_usage(dyno):
                 "-> `Dyno hours quota remaining this month`:\n"
                 f"     •  **{hours} hour(s), {minutes} minute(s)  "
                 f"-  {percentage}%**"
+                "\n\n"
                 f"-> `Estimated Heroku Expired`:\n"
                 f"     •  **{day} day(s)**"
             )
