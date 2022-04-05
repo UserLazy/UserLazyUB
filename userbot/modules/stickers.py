@@ -40,6 +40,7 @@ KANGING_STR = [
     "Curry Sticker ahh.....",
     "Curry dolo boss",
     "Swiper jangan mencurry",
+    "Aku curry ya maniez",
 ]
 
 
@@ -287,7 +288,7 @@ async def kang(args):
                 await bot.send_read_acknowledge(conv.chat_id)
 
         await args.edit(
-            "Curry Success!" f"\n[Klik Disini](t.me/addstickers/{packname})",
+            "Curry Success!" f"\n[Click Here](t.me/addstickers/{packname})",
             parse_mode="md",
         )
 
