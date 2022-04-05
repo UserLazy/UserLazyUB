@@ -114,6 +114,7 @@ WEATHER_DEFCITY = os.environ.get("WEATHER_DEFCITY", None)
 # Anti Spambot Config
 ANTI_SPAMBOT = sb(os.environ.get("ANTI_SPAMBOT", "False"))
 ANTI_SPAMBOT_SHOUT = sb(os.environ.get("ANTI_SPAMBOT_SHOUT", "False"))
+BLACKLIST_GCAST = {int(x) for x in os.environ.get("BLACKLIST_GCAST", "").split()}
 
 # Default .alive name
 ALIVE_NAME = os.environ.get("ALIVE_NAME", None)
