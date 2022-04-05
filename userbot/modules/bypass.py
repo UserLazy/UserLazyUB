@@ -7,7 +7,7 @@ from userbot.events import register
 def get_html(url):
     tag_li = []
     req = requests.get(url)
-    res = bs(req.text, "html.parser")
+    res = bs(req.content, "html.parser")
     box = res.find("div", class_="soraddlx soradlg").parent.find_all("li")
     if len(box) != 0:
         for clear in box:
