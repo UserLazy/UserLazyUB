@@ -84,7 +84,7 @@ async def sudo(event):
         await event.edit("🔮 **Blacklist GCAST:** `Disabled`")
 
 
-@register(pattern=r"^\.addblacklist(?: |$)(.*)", outgoing=True)
+@register(pattern=r"^\.addblocklist(?: |$)(.*)", outgoing=True)
 async def add(event):
     xxnx = await event.edit("`Processing...`")
     var = "BLACKLIST_GCAST"
@@ -114,7 +114,7 @@ async def add(event):
     heroku_Config[var] = blacklistgrup
 
 
-@register(pattern=r"^\.delblacklist(?: |$)(.*)", outgoing=True)
+@register(pattern=r"^\.delblocklist(?: |$)(.*)", outgoing=True)
 async def _(event):
     xxx = await event.edit("`Processing...`")
     gc = event.chat_id
@@ -148,9 +148,9 @@ CMD_HELP.update(
         "\nUsage: Sends a global broadcast message to all the groups you belong to."
         "\n\n>`.blchats`"
         "\nUsage: To check the gcast blacklist information."
-        "\n\n>`.addblacklist`"
+        "\n\n>`.addblocklist`"
         "\nUsage: To add the group to the gcast blacklist."
-        "\n\n>`.delblacklist`"
+        "\n\n>`.delblocklist`"
         "\nUsage: To delete the group to the gcast blacklist."
     }
 )
