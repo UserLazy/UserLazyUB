@@ -150,7 +150,7 @@ CMD_HELP.update(
         "\nUsage: To check the gcast blacklist information."
         "\n\n>`.addblacklist`"
         "\nUsage: To add the group to the gcast blacklist."
-        \"\n\n>`.delblacklist`"
+        "\n\n>`.delblacklist`"
         "\nUsage: To delete the group to the gcast blacklist."
     }
 )
