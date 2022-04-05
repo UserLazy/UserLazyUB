@@ -1,15 +1,17 @@
 # Using Python Slim-Buster
 FROM biansepang/weebproject:buster
 
-# Clone repo and prepare working directory
-RUN git clone -b master https://github.com/BianSepang/WeebProject /home/weebproject/ \
+
+RUN git clone -b master https://github.com/UserLazy/BotGabut.git /home/weebproject/ \
+    && pip3 install --no-cache-dir -r home/weebproject/requirements.txt \
     && chmod 777 /home/weebproject \
     && mkdir /home/weebproject/bin/
+
 
 # Copies config.env (if exists)
 COPY ./sample_config.env ./config.env* /home/weebproject/
 
-# Setup Working Directory
+# changing workdir
 WORKDIR /home/weebproject/
 
 # Finalization
