@@ -83,7 +83,7 @@ async def bot_ver(event):
 async def amireallyalive(alive):
     """For .alive command, check if the bot is running."""
     output = (
-        f"**WeebProject** is running on **{repo.active_branch.name}**\n\n"
+        f"**UserLazyUB** is running on **{repo.active_branch.name}**\n\n"
         f"**Python :** __v{python_version()}__\n"
         f"**Telethon :** __v{version.__version__}__\n"
         f"**User :** __{DEFAULTUSER}__"
