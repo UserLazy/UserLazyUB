@@ -8,12 +8,10 @@ def get_html(url):
     tag_li = []
     req = requests.get(url)
     res = bs(req.text, "html.parser")
-    box = res.find("div", class_="sbox").parent.find_all("li")
+    box = res.find("div", class_="soraddlx soradlg").parent.find_all("li")
     if len(box) != 0:
         for clear in box:
-            if clear.get_text() == "MP4":
-                box.remove(clear)
-            elif clear.get_text() == "MKV":
+            if clear.get_text() == "MKV":
                 box.remove(clear)
             else:
                 pass
