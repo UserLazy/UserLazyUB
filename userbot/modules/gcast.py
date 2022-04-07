@@ -78,7 +78,7 @@ async def sudo(event):
     list = blc.replace(" ", "\n» ")
     if blacklistgc == "True":
         await event.edit(
-            f"🔮 **Blacklist GCAST:** `Enabled`\n\n📚 **Blacklist Group:**\n» {list}\n\nType `.addblacklist` in the group you want to add to the gcast blacklist.",
+            f"🔮 **Blacklist GCAST:** `Enabled`\n\n📚 **Blacklist Group:**\n» {list}\n\nType `.addblocklist` in the group you want to add to the gcast blacklist.",
         )
     else:
         await event.edit("🔮 **Blacklist GCAST:** `Disabled`")
