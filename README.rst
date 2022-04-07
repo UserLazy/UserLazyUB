@@ -49,7 +49,7 @@ Note
 
 A modular Telegram Userbot running on Python3 with sqlalchemy database.
 
-Based on `ProjectBish <https://github.com/adekmaulana/ProjectBish>` and `WeebProject <https://github.com/BianSepang/WeebProject>` Userbot.
+Based on `ProjectBish <https://github.com/adekmaulana/ProjectBish>`_ and `WeebProject <https://github.com/BianSepang/WeebProject>`_ Userbot.
 
 ==================
 Deploy with Heroku
@@ -60,18 +60,18 @@ Deploy with Heroku
 =======
 Credits
 =======
-* `Adek Maulana <https://github.com/adekmaulana>` - ProjectBish
-* `Mr. Miss <https://github.com/keselekpermen69>` - UserButt
-* `Move Angel <https://github.com/MoveAngel>` - One4uBot
-* `Aidil Aryanto <https://github.com/aidilaryanto>` - ProjectDils
-* `Alfianandaa <https://github.com/alfianandaa>` - ProjectAlf
-* `GengKapak <https://github.com/GengKapak>` - DCLXVI
-* `WeebProject <https://github.com/BianSepang>` - BianSepang
-* `Man-Userbot <https://github.com/mrismanaziz>` - Risman
+* `Adek Maulana <https://github.com/adekmaulana>`_ - ProjectBish
+* `Mr. Miss <https://github.com/keselekpermen69>`_ - UserButt
+* `Move Angel <https://github.com/MoveAngel>`_ - One4uBot
+* `Aidil Aryanto <https://github.com/aidilaryanto>`_ - ProjectDils
+* `Alfianandaa <https://github.com/alfianandaa>`_ - ProjectAlf
+* `GengKapak <https://github.com/GengKapak>`_ - DCLXVI
+* `WeebProject <https://github.com/BianSepang>`_ - BianSepang
+* `Man-Userbot <https://github.com/mrismanaziz>`_ - Risman
 
-and `everyone <https://github.com/UserLazy/UserLazyUB/graphs/contributors>` that makes this userbot awesome :D
+and `everyone <https://github.com/UserLazy/UserLazyUB/graphs/contributors>`_ that makes this userbot awesome :D
 
 ======
 License
 ======
-Licensed under `Raphielscape Public License <https://github.com/UserLazy/UserLazyUB/blob/master/LICENSE>` - Version 1.d, February 2020
+Licensed under `Raphielscape Public License <https://github.com/UserLazy/UserLazyUB/blob/master/LICENSE>`_ - Version 1.d, February 2020
