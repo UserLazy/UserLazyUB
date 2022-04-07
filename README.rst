@@ -30,6 +30,7 @@ Read before deploy
 ==================
 
 .. code:: shell
+
     #include <std/disclaimer.h>
     /*
     *    Your Telegram account may get banned.
