@@ -32,7 +32,7 @@ Read before deploy
 .. code:: shell
 
     #include <std/disclaimer.h>
-    /*
+    *
     *    Your Telegram account may get banned.
     *    I am not responsible for any improper use of this bot
     *    This bot is intended for the purpose of having fun with memes,
@@ -43,7 +43,7 @@ Read before deploy
     *    And after that, then you pointed your fingers at us
     *    for getting your acoount deleted?
     *    I will be rolling on the floor laughing at you.
-    */
+    *
 
 ----
 Note
