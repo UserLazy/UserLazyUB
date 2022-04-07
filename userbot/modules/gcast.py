@@ -137,9 +137,7 @@ async def _(event):
         var = "BLACKLIST_GCAST"
         heroku_Config[var] = blacklistgrup
     else:
-        await xxx.edit(
-            "**This group is not on the gcast blacklist.**", 45
-        )
+        await xxx.edit("**This group is not on the gcast blacklist.**", 45)
 
 
 CMD_HELP.update(

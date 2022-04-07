@@ -112,9 +112,7 @@ async def _(event):
             try:
                 u = await event.client.get_entity(input_str)
             except ValueError:
-                await event.edit(
-                    "`Provide userid or username to view group history`"
-                )
+                await event.edit("`Provide userid or username to view group history`")
             uid = u.id
     else:
         uid = reply_message.sender_id
