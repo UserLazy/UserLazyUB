@@ -147,16 +147,16 @@ async def ungbans(un_gban):
 
     # If pass, inform and start ungbanning
     userunban = [
-            d.entity.id
-            for d in await un_gban.client.get_dialogs()
-            if (d.is_group or d.is_channel)
-        ]
-        for idiot in userunban:
-            try:
-                await un_gban.client(EditBannedRequest(idiot, user, UNBAN_RIGHTS))
-                await un_gban.edit("```Ungbanning...```")
-            except BaseException:
-                pass
+        d.entity.id
+        for d in await un_gban.client.get_dialogs()
+        if (d.is_group or d.is_channel)
+    ]
+    for idiot in userunban:
+        try:
+            await un_gban.client(EditBannedRequest(idiot, user, UNBAN_RIGHTS))
+            await un_gban.edit("```Ungbanning...```")
+        except BaseException:
+            pass
 
     if ungban(user.id) is False:
         await un_gban.edit("`Error! User probably not gban.`")
