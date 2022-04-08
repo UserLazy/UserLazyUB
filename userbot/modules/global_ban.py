@@ -80,7 +80,7 @@ async def gspider(gspdr):
             except BaseException:
                 pass
 
-        if gban(user.id) is False:
+   if gban(user.id) is False:
         await gspdr.edit("`Error! User probably already gbanned.\nRe-rolls the ban.`")
     else:
         if reason:
