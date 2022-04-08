@@ -208,8 +208,5 @@ async def gspider(userbot):
 
 
 CMD_HELP.update(
-    {
-        "gban": ">`.gban <userid/reply>`"
-        "\nUsage: For globally banned chat "
-    }
+    {"gban": ">`.gban <userid/reply>`" "\nUsage: For globally banned chat "}
 )
