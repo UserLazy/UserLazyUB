@@ -92,16 +92,16 @@ async def gspider(gspdr):
 
     # If pass, inform and start gbanning
     userunban = [
-            d.entity.id
-            for d in await gspdr.client.get_dialogs()
-            if (d.is_group or d.is_channel)
-        ]
-        for idiot in userunban:
-            try:
-                await gspdr.client(EditBannedRequest(idiot, user, BANNED_RIGHTS))
-                await gspdr.edit("```Gban succses...```")
-            except BaseException:
-                pass
+        d.entity.id
+        for d in await gspdr.client.get_dialogs()
+        if (d.is_group or d.is_channel)
+    ]
+    for idiot in userunban:
+        try:
+            await gspdr.client(EditBannedRequest(idiot, user, BANNED_RIGHTS))
+            await gspdr.edit("```Gbanned succses...```")
+        except BaseException:
+            pass
 
     if gban(user.id) is False:
         await gspdr.edit("`Error! User probably already gbanned.\nRe-rolls the ban.`")
