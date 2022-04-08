@@ -14,7 +14,7 @@ class GBan(BASE):
         self.sender = str(sender)
 
 
-GMute.__table__.create(checkfirst=True)
+GBan.__table__.create(checkfirst=True)
 
 
 def is_gban(sender_id):
