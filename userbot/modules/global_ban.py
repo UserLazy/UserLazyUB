@@ -66,7 +66,7 @@ async def handler(new):
                         return
 
 
-@register(outgoing=True, disable_errors=True, pattern=r"^\.gmute(?: |$)(.*)")
+@register(outgoing=True, disable_errors=True, pattern=r"^\.gban(?: |$)(.*)")
 async def gspider(gspdr):
     """For .gban command, globally gbans the replied/tagged person"""
     # Admin or creator check
