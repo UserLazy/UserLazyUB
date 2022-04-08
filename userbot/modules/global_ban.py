@@ -12,6 +12,29 @@ from userbot.events import register
 NO_ADMIN = "`I am not an admin!`"
 NO_SQL = "`Running on Non-SQL mode!`"
 
+BANNED_RIGHTS = ChatBannedRights(
+    until_date=None,
+    view_messages=True,
+    send_messages=True,
+    send_media=True,
+    send_stickers=True,
+    send_gifs=True,
+    send_games=True,
+    send_inline=True,
+    embed_links=True,
+)
+
+UNBAN_RIGHTS = ChatBannedRights(
+    until_date=None,
+    send_messages=None,
+    send_media=None,
+    send_stickers=None,
+    send_gifs=None,
+    send_games=None,
+    send_inline=None,
+    embed_links=None,
+)
+
 
 @bot.on(ChatAction)
 async def handler(new):
@@ -33,7 +56,7 @@ async def handler(new):
                 if admin or creator:
                     try:
                         await client.edit_permissions(
-                            new.chat_id, guser.id, view_messages=False
+                            new.chat_id, guser.id, BANNED_RIGHTS,
                         )
                         await new.reply(
                             f"**First Name :** [{guser.id}](tg://user?id={guser.id}) was **Banned**\n"
@@ -70,12 +93,12 @@ async def gspider(gspdr):
     # If pass, inform and start gbanning
     userban = [
             d.entity.id
-            for d in await gspdr.client.get_dialogs()
+            for d in await un_gban.client.get_dialogs()
             if (d.is_group or d.is_channel)
         ]
         for idiot in userban:
             try:
-                await gspdr.client.edit_permissions(idiot, user, view_messages=False)
+                await gspdr.client(EditBannedRequest(idiot, user, BANNED_RIGHTS))
                 await gspdr.edit("`Grabs a huge, gbanned succses!`")
             except BaseException:
                 pass
@@ -130,7 +153,7 @@ async def ungbans(un_gban):
         ]
         for idiot in userunban:
             try:
-                await un_gban.client.edit_permissions(idiot, user, send_messages=True)
+                await un_gban.client(EditBannedRequest(idiot, user, UNBAN_RIGHTS))
                 await un_gban.edit("```Ungbanning...```")
             except BaseException:
                 pass
