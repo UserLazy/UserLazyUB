@@ -73,7 +73,7 @@ async def gspider(gspdr):
             for d in await gspdr.client.get_dialogs()
             if (d.is_group or d.is_channel)
         ]
-        for idio in userban:
+        for idiot in userban:
             try:
                 await gspdr.client.edit_permissions(idiot, user, view_messages=False)
                 await gspdr.edit("`Grabs a huge, gbanned succses!`")
