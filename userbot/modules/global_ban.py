@@ -1,11 +1,12 @@
 from asyncio import sleep
 from os import remove
 
-from telethon.events import ChatAction
+from telethon.tl.functions.contacts import BlockRequest, UnblockRequest
 from telethon.tl.functions.channels import EditBannedRequest
+from telethon.tl.types import MessageEntityMentionName
 from telethon.tl.types import ChatBannedRights
 
-from userbot import BOTLOG_CHATID, CMD_HELP, bot
+from userbot import CMD_HELP
 from userbot.events import register
 
 
@@ -36,140 +37,179 @@ UNBAN_RIGHTS = ChatBannedRights(
 )
 
 
-@bot.on(ChatAction)
-async def handler(new):
-    if not new.user_joined and not new.user_added:
-        return
-    try:
-        from userbot.modules.sql_helper.gban_sql import is_gban
+async def get_full_user(event):
+    args = event.pattern_match.group(1).split(":", 1)
+    extra = None
+    if event.reply_to_msg_id and len(args) != 2:
+        previous_message = await event.get_reply_message()
+        user_obj = await event.client.get_entity(previous_message.sender_id)
+        extra = event.pattern_match.group(1)
+    elif len(args[0]) > 0:
+        user = args[0]
+        if len(args) == 2:
+            extra = args[1]
+        if user.isnumeric():
+            user = int(user)
+        if not user:
+            await event.edit("`UserID is required")
+            return
+        if event.message.entities is not None:
+            probable_user_mention_entity = event.message.entities[0]
+            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
+                user_id = probable_user_mention_entity.user_id
+                user_obj = await event.client.get_entity(user_id)
+                return user_obj
+        try:
+            user_obj = await event.client.get_entity(user)
+        except Exception as err:
+            return await event.edit("Something went wrong", str(err))
+    return user_obj, extra
 
-        guser = await new.get_user()
-        gban = is_gban(guser.id)
+
+async def get_user_sender_id(user, event):
+    if isinstance(user, str):
+        user = int(user)
+    try:
+        user_obj = await event.client.get_entity(user)
+    except (TypeError, ValueError) as err:
+        await event.edit(str(err))
+        return None
+    return user_obj
+
+
+@register(outgoing=True, pattern=r"^\.gban(?: |$)(.*)")
+async def gspider(userbot):
+    lol = userbot
+    sender = await lol.get_sender()
+    me = await lol.client.get_me()
+    if sender.id != me.id:
+        userlazy = await lol.reply("`Gbanning...`")
+    else:
+        userlazy = await lol.edit("`Gbanning......`")
+    me = await userbot.client.get_me()
+    await userlazy.edit("`Global Banned user...`")
+    my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
+    await userbot.get_chat()
+    a = b = 0
+    if userbot.is_private:
+        user = userbot.chat
+        reason = userbot.pattern_match.group(1)
+    else:
+        pass
+    try:
+        user, reason = await get_full_user(userbot)
     except BaseException:
-        return
-    if gban:
-        for i in gban:
-            if i.sender == str(guser.id):
-                chat = await new.get_chat()
-                admin = chat.admin_rights
-                creator = chat.creator
-                if admin or creator:
-                    try:
-                        await client.edit_permissions(
-                            new.chat_id, guser.id, BANNED_RIGHTS,
-                        )
-                        await new.reply(
-                            f"**First Name :** [{guser.id}](tg://user?id={guser.id}) was **Banned**\n"
-                            f"**Reason :** `Gbanned`"
-                        )
-                    except BaseException:
-                        return
-
-
-@register(outgoing=True, disable_errors=True, pattern=r"^\.gban(?: |$)(.*)")
-async def gspider(gspdr):
-    """For .gban command, globally gbans the replied/tagged person"""
-    # Admin or creator check
-    chat = await gspdr.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-
-    # If not admin and not creator, return
-    if not admin and not creator:
-        await gspdr.edit(NO_ADMIN)
-        return
-
-    # Check if the function running under SQL mode
+        pass
     try:
-        from userbot.modules.sql_helper.gban_sql import gban
-    except AttributeError:
-        await gspdr.edit(NO_SQL)
-        return
-
-    user, reason = await get_user_from_event(gspdr)
-    if not user:
-        return
-
-    # If pass, inform and start gbanning
-    userunban = [
-        d.entity.id
-        for d in await gspdr.client.get_dialogs()
-        if (d.is_group or d.is_channel)
-    ]
-    for idiot in userunban:
+        if not reason:
+            reason = "Private"
+    except BaseException:
+        return await userlazy.edit(f"**Something went wrong!!**")
+    if user:
+        if user.id == 870471128:
+            return await userlazy.edit(
+                f"**Didn't , Your father teach you ? That you can't gban your creator🖕**"
+            )
         try:
-            await gspdr.client(EditBannedRequest(idiot, user, BANNED_RIGHTS))
-            await gspdr.edit("```Gbanned succses...```")
+            from userbot.modules.sql_helper.gmute_sql import gmute
         except BaseException:
             pass
-
-    if gban(user.id) is False:
-        await gspdr.edit("`Error! User probably already gbanned.\nRe-rolls the ban.`")
-    else:
-        if reason:
-            await gspdr.edit(f"`Globally banned!`\nReason: {reason}")
-        else:
-            await gspdr.edit("`Globally banned!`")
-
-        if BOTLOG:
-            await gspdr.client.send_message(
-                BOTLOG_CHATID,
-                "#GBAN\n"
-                f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                f"CHAT: {gspdr.chat.title}(`{gspdr.chat_id}`)",
-            )
-
-            
-@register(outgoing=True, disable_errors=True, pattern=r"^\.ungban(?: |$)(.*)")
-async def ungbans(un_gban):
-    """For .ungban command, ungbans the target in the userbot"""
-    # Admin or creator check
-    chat = await un_gban.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-
-    # If not admin and not creator, return
-    if not admin and not creator:
-        await un_gban.edit(NO_ADMIN)
-        return
-
-    # Check if the function running under SQL mode
-    try:
-        from userbot.modules.sql_helper.gban_sql import ungban
-    except AttributeError:
-        await un_gban.edit(NO_SQL)
-        return
-
-    user = await get_user_from_event(un_gban)
-    user = user[0]
-    if not user:
-        return
-
-    # If pass, inform and start ungbanning
-    userunban = [
-        d.entity.id
-        for d in await un_gban.client.get_dialogs()
-        if (d.is_group or d.is_channel)
-    ]
-    for idiot in userunban:
         try:
-            await un_gban.client(EditBannedRequest(idiot, user, UNBAN_RIGHTS))
-            await un_gban.edit("```Ungbanning...```")
+            await userbot.client(BlockRequest(user))
         except BaseException:
             pass
-
-    if ungban(user.id) is False:
-        await un_gban.edit("`Error! User probably not gban.`")
+        testuserbot = [
+            d.entity.id
+            for d in await userbot.client.get_dialogs()
+            if (d.is_group or d.is_channel)
+        ]
+        for i in testuserbot:
+            try:
+                await userbot.client.edit_permissions(i, user, BANNED_RIGHTS)
+                a += 1
+                await userlazy.edit(f"`Gbanned Total Affected Chats : {a}`")
+            except BaseException:
+                b += 1
     else:
-        # Inform about success
-        await un_gban.edit("```Ungbanned Successfully```")
-        await sleep(3)
-        await un_gban.delete()
+        await userlazy.edit(f"`Reply to a user !!`")
+    try:
+        if gmute(user.id) is False:
+            return await userlazy.edit(f"`Error! User already gbanned.`")
+    except BaseException:
+        pass
+    return await userlazy.edit(
+        f"`Gbanned` [{user.first_name}](tg://user?id={user.id}) `in {a} chats.\nAdded to gbanwatch.`"
+    )
 
-        if BOTLOG:
-            await un_gban.client.send_message(
-                BOTLOG_CHATID,
-                "#UNGBAN\n"
-                f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                f"CHAT: {un_gban.chat.title}(`{un_gban.chat_id}`)",
+
+@register(outgoing=True, pattern=r"^\.ungban(?: |$)(.*)")
+async def gspider(userbot):
+    lol = userbot
+    sender = await lol.get_sender()
+    me = await lol.client.get_me()
+    if sender.id != me.id:
+        userlazy = await lol.reply("`UnGbanning...`")
+    else:
+        userlazy = await lol.edit("`UnGbanning....`")
+    me = await userbot.client.get_me()
+    await userlazy.edit(f"`Trying to ungban user !`")
+    my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
+    await userbot.get_chat()
+    a = b = 0
+    if userbot.is_private:
+        user = userbot.chat
+        reason = userbot.pattern_match.group(1)
+    else:
+        pass
+    try:
+        user, reason = await get_full_user(userbot)
+    except BaseException:
+        pass
+    try:
+        if not reason:
+            reason = "Private"
+    except BaseException:
+        return await userlazy.edit("`Terjadi Kesalahan!!`")
+    if user:
+        if user.id == 870471128:
+            return await userlazy.edit(
+                "`You can't gban him... as a result you can not ungban him... he is my creator!`"
             )
+        try:
+            from userbot.modules.sql_helper.gmute_sql import ungmute
+        except BaseException:
+            pass
+        try:
+            await userbot.client(UnblockRequest(user))
+        except BaseException:
+            pass
+        testuserbot = [
+            d.entity.id
+            for d in await userbot.client.get_dialogs()
+            if (d.is_group or d.is_channel)
+        ]
+        for i in testuserbot:
+            try:
+                await userbot.client.edit_permissions(i, user, UNBAN_RIGHTS)
+                a += 1
+                await userlazy.edit(f"`Ungbanning... AFFECTED CHATS - {a} `")
+            except BaseException:
+                b += 1
+    else:
+        await userlazy.edit("`Reply to a user !!`")
+    try:
+        if ungmute(user.id) is False:
+            return await userlazy.edit("`Error! User probably already ungbanned.`")
+    except BaseException:
+        pass
+    return await userlazy.edit(
+        f"`Ungbanned` [{user.first_name}](tg://user?id={user.id}) `in {a} chats.\nRemoved from gbanwatch.`"
+    )
+
+
+CMD_HELP.update(
+    {
+        "gban": ">`.gban <userid/reply>`"
+        "\nUsage: For globally banned chat "
+    }
+)
