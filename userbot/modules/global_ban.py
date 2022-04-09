@@ -13,29 +13,6 @@ from userbot.events import register
 NO_ADMIN = "`I am not an admin!`"
 NO_SQL = "`Running on Non-SQL mode!`"
 
-BANNED_RIGHTS = ChatBannedRights(
-    until_date=None,
-    view_messages=True,
-    send_messages=True,
-    send_media=True,
-    send_stickers=True,
-    send_gifs=True,
-    send_games=True,
-    send_inline=True,
-    embed_links=True,
-)
-
-UNBAN_RIGHTS = ChatBannedRights(
-    until_date=None,
-    send_messages=None,
-    send_media=None,
-    send_stickers=None,
-    send_gifs=None,
-    send_games=None,
-    send_inline=None,
-    embed_links=None,
-)
-
 
 async def get_full_user(event):
     args = event.pattern_match.group(1).split(":", 1)
@@ -125,7 +102,7 @@ async def gspider(userbot):
         ]
         for i in testuserbot:
             try:
-                await userbot.client.edit_permissions(i, user, BANNED_RIGHTS)
+                await userbot.client.edit_permissions(i, user, view_messages=False)
                 a += 1
                 await userlazy.edit(f"`Gbanned Total Affected Chats : {a}`")
             except BaseException:
@@ -190,7 +167,7 @@ async def gspider(userbot):
         ]
         for i in testuserbot:
             try:
-                await userbot.client.edit_permissions(i, user, UNBAN_RIGHTS)
+                await userbot.client.edit_permissions(i, user, send_messages=True)
                 a += 1
                 await userlazy.edit(f"`Ungbanning... AFFECTED CHATS - {a} `")
             except BaseException:
