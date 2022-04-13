@@ -156,7 +156,7 @@
     },
     "TERM_ALIAS": {
       "description": "Display user for .term command",
-      "value": "WeebProject",
+      "value": "UserLazyUB",
       "required": false
     }
   },
