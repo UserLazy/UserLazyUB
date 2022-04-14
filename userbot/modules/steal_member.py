@@ -95,6 +95,6 @@ async def get_users(event):
 CMD_HELP.update(
     {
         "mass_add": ">`.addall <group username>`"
-        "\Usage: Scrape members for other groups "
+        "\Usage: Scrape members for other groups"
     }
 )
