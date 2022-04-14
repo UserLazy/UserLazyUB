@@ -91,9 +91,7 @@ async def get_users(event):
         f"**Terminal Finished** \n\n• Successfully Invited `{s}` people \n• failed to invite `{f}` people"
     )
 
+
 CMD_HELP.update(
-    {
-        "mass_add": ">`.addall` <link/username group>"
-        "\nUsage: Scrape member group"
-    }
+    {"mass_add": ">`.addall` <link/username group>" "\nUsage: Scrape member group"}
 )
